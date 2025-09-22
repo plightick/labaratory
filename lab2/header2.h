@@ -7,12 +7,15 @@
 
 class MenuManager {
 private:
-    Matrix* matrixA;
-    Matrix* matrixB;
-    Matrix* matrixResult;
+    Matrix* matrixA = nullptr;
+    Matrix* matrixB = nullptr;
+    Matrix* matrixResult = nullptr;
+
+    MenuManager(const MenuManager&) = delete;
+    MenuManager& operator=(const MenuManager&) = delete;
 
 public:
-    MenuManager() : matrixA(nullptr), matrixB(nullptr), matrixResult(nullptr) {}
+    MenuManager() = default;
     
     ~MenuManager() {
         deleteMatrix(matrixA);
@@ -21,7 +24,8 @@ public:
     }
 
     Matrix* createMatrix(const char* matrixName) {
-        int rows, cols;
+        int rows;
+        int cols;
         std::cout << "=== СОЗДАНИЕ МАТРИЦЫ " << matrixName << " ===" << std::endl;
         std::cout << "Введите количество строк: ";
         std::cin >> rows;
@@ -33,7 +37,7 @@ public:
             return nullptr;
         }
         
-        Matrix* matrix = new Matrix(rows, cols);
+        auto matrix = new Matrix(rows, cols);
         
         int choice;
         std::cout << "Выберите способ заполнения матрицы:" << std::endl;
@@ -90,7 +94,7 @@ public:
         }
     }
 
-    void showCurrentMatrices() {
+    void showCurrentMatrices() const {
         std::cout << "=== ТЕКУЩИЕ МАТРИЦЫ ===" << std::endl;
         if (matrixA != nullptr) {
             std::cout << "Матрица A:" << std::endl;
@@ -171,5 +175,6 @@ public:
         } while (choice != 0);
     }
 };
+
 
 #endif

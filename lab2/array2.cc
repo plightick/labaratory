@@ -6,7 +6,8 @@
 Matrix::Matrix(int numRows, int numCols) : rows(numRows), cols(numCols) {
     if (rows <= 0 || cols <= 0) {
         std::cerr << "Ошибка: Размеры матрицы должны быть положительными." << std::endl;
-        rows = cols = 0;
+        rows = 0;
+        cols = 0;
         data = nullptr;
         return;
     }
@@ -91,19 +92,19 @@ int Matrix::getValue(int i, int j) const {
     }
 }
 
-Matrix Matrix::operator&(const Matrix& other) const {
-    if (cols != other.rows) {
+Matrix operator&(const Matrix& lhs, const Matrix& rhs) {
+    if (lhs.cols != rhs.rows) {
         std::cerr << "Ошибка: Умножение матриц невозможно." << std::endl;
         return Matrix(0, 0);
     }
 
-    Matrix result(rows, other.cols);
+    Matrix result(lhs.rows, rhs.cols);
 
-    for (int i = 0; i < rows; ++i) {
-        for (int j = 0; j < other.cols; ++j) {
+    for (int i = 0; i < lhs.rows; ++i) {
+        for (int j = 0; j < rhs.cols; ++j) {
             int sum = 0;
-            for (int k = 0; k < cols; ++k) {
-                sum += data[i][k] * other.data[k][j];
+            for (int k = 0; k < lhs.cols; ++k) {
+                sum += lhs.data[i][k] * rhs.data[k][j];
             }
             result.data[i][j] = sum;
         }
@@ -132,13 +133,14 @@ void Matrix::fillRandom(int min, int max) {
         return;
     }
     
-    srand(time(0));
+    std::srand(std::time(nullptr));
     for (int i = 0; i < rows; ++i) {
         for (int j = 0; j < cols; ++j) {
-            data[i][j] = min + rand() % (max - min + 1);
+            data[i][j] = min + std::rand() % (max - min + 1);
         }
     }
 }
+
 
 void Matrix::inputFromKeyboard() {
     if (data == nullptr) {

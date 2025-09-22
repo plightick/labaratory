@@ -21,11 +21,12 @@ public:
     void setValue(int i, int j, int value);
     int getValue(int i, int j) const;
 
-    Matrix operator&(const Matrix& other) const;
+    friend Matrix operator&(const Matrix& lhs, const Matrix& rhs);
 
     void print() const;
     void fillRandom(int min = 0, int max = 10);
     void inputFromKeyboard();
 };
+
 
 #endif
