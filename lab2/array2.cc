@@ -141,7 +141,6 @@ void Matrix::fillRandom(int min, int max) {
     }
 }
 
-
 void Matrix::inputFromKeyboard() {
     if (data == nullptr) {
         std::cerr << "Ошибка: Матрица не инициализирована." << std::endl;
