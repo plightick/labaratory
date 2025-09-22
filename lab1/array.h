@@ -11,8 +11,8 @@ private:
     int cols;
     int* intersectionResult;
     int* unionResult;
-    int intersectionSize;
-    int unionSize;
+    int intersectionSize = 0;
+    int unionSize = 0;
 
     bool findElementInMatrix(int** matrix, int number) const;
     bool containsElement(const int* array, int size, int number) const;
@@ -22,8 +22,6 @@ public:
     Array(int row, int col);
     Array(const Array& other);
     Array& operator=(const Array& other) = delete;
-    Array(Array&& other) = delete;
-    Array& operator=(Array&& other) = delete;
     ~Array();
 
     void calculateIntersection();

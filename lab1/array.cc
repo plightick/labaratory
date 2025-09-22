@@ -1,7 +1,7 @@
 #include "array.h"
 #include <iostream>
 
-Array::Array(int row, int col) : rows(row), cols(col), intersectionResult(nullptr), unionResult(nullptr), intersectionSize(0), unionSize(0) {
+Array::Array(int row, int col) : rows(row), cols(col), intersectionResult(nullptr), unionResult(nullptr) {
     firstMatrix = new int*[rows];
     for (int i = 0; i < rows; i++) {
         firstMatrix[i] = new int[cols];
@@ -99,18 +99,19 @@ void Array::calculateIntersection() {
     intersectionSize = 0;
     
     int maxPossibleSize = rows * cols;
-    int* tempArray = new int[maxPossibleSize];
+    auto tempArray = new int[maxPossibleSize];
     int tempSize = 0;
     
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
             int number = firstMatrix[i][j];
             
-            if (!isNumberInTempArray(tempArray, tempSize, number)) {
-                if (findElementInMatrix(secondMatrix, number)) {
-                    tempArray[tempSize] = number;
-                    tempSize++;
-                }
+            bool foundInTemp = isNumberInTempArray(tempArray, tempSize, number);
+            bool foundInSecond = findElementInMatrix(secondMatrix, number);
+            
+            if (!foundInTemp && foundInSecond) {
+                tempArray[tempSize] = number;
+                tempSize++;
             }
         }
     }
@@ -132,7 +133,7 @@ void Array::calculateUnion() {
     unionSize = 0;
     
     int maxPossibleSize = rows * cols * 2;
-    int* tempArray = new int[maxPossibleSize];
+    auto tempArray = new int[maxPossibleSize];
     int tempSize = 0;
     
     for (int i = 0; i < rows; i++) {
