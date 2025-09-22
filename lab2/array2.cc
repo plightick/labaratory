@@ -13,7 +13,6 @@ Matrix::Matrix(int numRows, int numCols) : rows(numRows), cols(numCols) {
     }
 
     data = new int*[rows];
-
     for (int i = 0; i < rows; ++i) {
         data[i] = new int[cols];
         for (int j = 0; j < cols; ++j) {
