@@ -1,45 +1,20 @@
 #include "header2.h"
-#include <iostream>
-#include <limits>
-#include <chrono>
-#include <random>
 
 Matrix* MenuManager::createMatrix(const char* matrixName) {
     int rows, cols;
-    std::cout << "Введите количество строк: ";
+    std::cout << "Введите количество строк для " << matrixName << ": ";
     std::cin >> rows;
-    std::cout << "Введите количество столбцов: ";
+    std::cout << "Введите количество столбцов для " << matrixName << ": ";
     std::cin >> cols;
 
     if (rows <= 0 || cols <= 0) {
-        std::cout << "Ошибка: Размеры должны быть положительными." << std::endl;
+        std::cout << "Ошибка: размеры матрицы должны быть положительными!" << std::endl;
         return nullptr;
     }
 
-    auto* matrix = new Matrix(rows, cols);
-    int choice = 0;
-
-    std::cout << "Выберите способ заполнения матрицы:" << std::endl;
-    std::cout << "1 - Ввод с клавиатуры" << std::endl;
-    std::cout << "2 - Заполнение случайными числами" << std::endl;
-    std::cout << "Ваш выбор: ";
-    std::cin >> choice;
-
-    switch (choice) {
-        case 1:
-            matrix->inputFromKeyboard();
-            break;
-        case 2:
-            matrix->fillRandom();
-            std::cout << "Матрица заполнена случайными числами." << std::endl;
-            break;
-        default:
-            std::cout << "Неверный выбор. Матрица будет заполнена нулями." << std::endl;
-            break;
-    }
-
-    std::cout << "Матрица " << matrixName << " создана успешно!" << std::endl;
-    matrix->print();
+    Matrix* matrix = new Matrix(rows, cols);
+    matrix->fillRandom();
+    std::cout << "Матрица " << matrixName << " создана." << std::endl;
     return matrix;
 }
 
@@ -52,7 +27,7 @@ void MenuManager::deleteMatrix(Matrix*& matrix) {
 
 void MenuManager::multiplyMatrices() {
     if (matrixA == nullptr || matrixB == nullptr) {
-        std::cout << "Ошибка: Сначала создайте обе матрицы!" << std::endl;
+        std::cout << "Ошибка: сначала создайте обе матрицы!" << std::endl;
         return;
     }
 
@@ -63,38 +38,31 @@ void MenuManager::multiplyMatrices() {
     matrixB->print();
 
     deleteMatrix(matrixResult);
-    matrixResult = new Matrix((*matrixA) & (*matrixB));
 
-    if (matrixResult->getRows() > 0 && matrixResult->getCols() > 0) {
+    Matrix temp = (*matrixA & *matrixB);
+    if (temp.getRows() > 0 && temp.getCols() > 0) {
+        matrixResult = new Matrix(temp);
         std::cout << "Результат умножения (A & B):" << std::endl;
         matrixResult->print();
     } else {
-        std::cout << "Умножение не выполнено из-за ошибки размеров." << std::endl;
+        std::cout << "Умножение невозможно: несовместимые размеры матриц." << std::endl;
     }
 }
 
 void MenuManager::showCurrentMatrices() const {
-    std::cout << "=== Текущие матрицы ===" << std::endl;
-    if (matrixA) {
-        std::cout << "Матрица A:" << std::endl;
-        matrixA->print();
-    } else {
-        std::cout << "Матрица A отсутствует." << std::endl;
-    }
+    std::cout << "=== ТЕКУЩИЕ МАТРИЦЫ ===" << std::endl;
 
-    if (matrixB) {
-        std::cout << "Матрица B:" << std::endl;
-        matrixB->print();
-    } else {
-        std::cout << "Матрица B отсутствует." << std::endl;
-    }
+    std::cout << "Матрица A:" << std::endl;
+    if (matrixA != nullptr) matrixA->print();
+    else std::cout << "Матрица A отсутствует." << std::endl;
 
-    if (matrixResult) {
-        std::cout << "Результат умножения (A & B):" << std::endl;
-        matrixResult->print();
-    } else {
-        std::cout << "Результат умножения отсутствует." << std::endl;
-    }
+    std::cout << "Матрица B:" << std::endl;
+    if (matrixB != nullptr) matrixB->print();
+    else std::cout << "Матрица B отсутствует." << std::endl;
+
+    std::cout << "Результат:" << std::endl;
+    if (matrixResult != nullptr) matrixResult->print();
+    else std::cout << "Результат отсутствует." << std::endl;
 }
 
 void MenuManager::deleteAllMatrices() {
@@ -105,42 +73,41 @@ void MenuManager::deleteAllMatrices() {
 }
 
 void MenuManager::showMenu() {
-    int choice = 0;
+    int choice;
     do {
         std::cout << "\n=== МЕНЮ ===" << std::endl;
-        std::cout << "1 - Создать матрицу A" << std::endl;
-        std::cout << "2 - Создать матрицу B" << std::endl;
-        std::cout << "3 - Умножить матрицы (A & B)" << std::endl;
-        std::cout << "4 - Показать текущие матрицы" << std::endl;
-        std::cout << "5 - Удалить все матрицы" << std::endl;
-        std::cout << "0 - Выход" << std::endl;
-        std::cout << "Ваш выбор: ";
+        std::cout << "1. Создать матрицу A" << std::endl;
+        std::cout << "2. Создать матрицу B" << std::endl;
+        std::cout << "3. Умножить A и B" << std::endl;
+        std::cout << "4. Показать текущие матрицы" << std::endl;
+        std::cout << "5. Удалить все матрицы" << std::endl;
+        std::cout << "0. Выход" << std::endl;
+        std::cout << "Выберите действие: ";
         std::cin >> choice;
 
         switch (choice) {
-            case 1:
+            case 1: 
                 deleteMatrix(matrixA);
-                matrixA = createMatrix("A");
+                matrixA = createMatrix("A"); 
                 break;
-            case 2:
+            case 2: 
                 deleteMatrix(matrixB);
-                matrixB = createMatrix("B");
+                matrixB = createMatrix("B"); 
                 break;
-            case 3:
-                multiplyMatrices();
+            case 3: 
+                multiplyMatrices(); 
                 break;
-            case 4:
-                showCurrentMatrices();
+            case 4: 
+                showCurrentMatrices(); 
                 break;
-            case 5:
-                deleteAllMatrices();
+            case 5: 
+                deleteAllMatrices(); 
                 break;
-            case 0:
-                std::cout << "Выход из программы." << std::endl;
+            case 0: 
+                std::cout << "Выход из программы." << std::endl; 
                 break;
-            default:
-                std::cout << "Неверный выбор!" << std::endl;
-                break;
+            default: 
+                std::cout << "Неверный выбор, попробуйте снова." << std::endl;
         }
     } while (choice != 0);
 }
