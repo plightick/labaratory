@@ -8,6 +8,5 @@ int main() {
     MenuManager menu;
     menu.showMenu();
     
-    
     return 0;
 }
