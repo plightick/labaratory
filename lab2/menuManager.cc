@@ -1,7 +1,8 @@
 #include "header2.h"
 
 Matrix* MenuManager::createMatrix(const char* matrixName) {
-    int rows, cols;
+    int rows;
+    int cols;
     std::cout << "=== СОЗДАНИЕ МАТРИЦЫ " << matrixName << " ===" << std::endl;
     std::cout << "Введите количество строк: ";
     std::cin >> rows;
