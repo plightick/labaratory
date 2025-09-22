@@ -12,7 +12,9 @@ void showMenu() {
 }
 
 int main() {
-    int rows, cols;
+    int rows;
+    int cols;
+    
     std::cout << "Введите количество строк: ";
     std::cin >> rows;
     std::cout << "Введите количество столбцов: ";

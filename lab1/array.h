@@ -14,24 +14,28 @@ private:
     int intersectionSize;
     int unionSize;
 
-    bool findElementInMatrix(int** matrix, int number);
-    bool containsElement(int* array, int size, int number);
+    bool findElementInMatrix(int** matrix, int number) const;
+    bool containsElement(const int* array, int size, int number) const;
+    bool isNumberInTempArray(const int* tempArray, int tempSize, int number) const;
 
 public:
     Array(int row, int col);
     Array(const Array& other);
+    Array& operator=(const Array& other) = delete;
+    Array(Array&& other) = delete;
+    Array& operator=(Array&& other) = delete;
     ~Array();
 
     void calculateIntersection();
     void calculateUnion();
-    void printIntersection(const std::string& name);
-    void printUnion(const std::string& name);
+    void printIntersection(const std::string& name) const;
+    void printUnion(const std::string& name) const;
     void inputFirstMatrix();
     void inputSecondMatrix();
-    int** getFirstMatrix();
-    int** getSecondMatrix();
-    int getRows();
-    int getCols();
+    int** getFirstMatrix() const;
+    int** getSecondMatrix() const;
+    int getRows() const;
+    int getCols() const;
 };
 
 #endif
