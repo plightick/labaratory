@@ -5,9 +5,9 @@
 
 class Matrix {
 private:
-    int** data;
-    int rows;
-    int cols;
+    int** data = nullptr;
+    int rows = 0;
+    int cols = 0;
 
 public:
     Matrix(int numRows, int numCols);
@@ -21,11 +21,28 @@ public:
     void setValue(int i, int j, int value);
     int getValue(int i, int j) const;
 
-    friend Matrix operator&(const Matrix& lhs, const Matrix& rhs);
-
     void print() const;
     void fillRandom(int min = 0, int max = 10);
     void inputFromKeyboard();
+
+    friend Matrix operator&(const Matrix& lhs, const Matrix& rhs) {
+        if (lhs.cols != rhs.rows) {
+            std::cerr << "Ошибка: Умножение матриц невозможно." << std::endl;
+            return Matrix(0, 0);
+        }
+
+        Matrix result(lhs.rows, rhs.cols);
+        for (int i = 0; i < lhs.rows; ++i) {
+            for (int j = 0; j < rhs.cols; ++j) {
+                int sum = 0;
+                for (int k = 0; k < lhs.cols; ++k) {
+                    sum += lhs.data[i][k] * rhs.data[k][j];
+                }
+                result.data[i][j] = sum;
+            }
+        }
+        return result;
+    }
 };
 
 #endif

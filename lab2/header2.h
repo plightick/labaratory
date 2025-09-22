@@ -16,7 +16,7 @@ private:
 
 public:
     MenuManager() = default;
-    
+
     ~MenuManager() {
         deleteMatrix(matrixA);
         deleteMatrix(matrixB);
@@ -24,25 +24,10 @@ public:
     }
 
     Matrix* createMatrix(const char* matrixName);
-
-    void deleteMatrix(Matrix*& matrix) {
-        if (matrix != nullptr) {
-            delete matrix;
-            matrix = nullptr;
-        }
-    }
-
+    void deleteMatrix(Matrix*& matrix);
     void multiplyMatrices();
-
     void showCurrentMatrices() const;
-
-    void deleteAllMatrices() {
-        deleteMatrix(matrixA);
-        deleteMatrix(matrixB);
-        deleteMatrix(matrixResult);
-        std::cout << "Все матрицы удалены." << std::endl;
-    }
-
+    void deleteAllMatrices();
     void showMenu();
 };
 

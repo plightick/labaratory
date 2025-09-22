@@ -40,6 +40,13 @@ Matrix* MenuManager::createMatrix(const char* matrixName) {
     return matrix;
 }
 
+void MenuManager::deleteMatrix(Matrix*& matrix) {
+    if (matrix != nullptr) {
+        delete matrix;
+        matrix = nullptr;
+    }
+}
+
 void MenuManager::multiplyMatrices() {
     if (matrixA == nullptr || matrixB == nullptr) {
         std::cout << "Ошибка: Сначала создайте обе матрицы!" << std::endl;
@@ -53,7 +60,7 @@ void MenuManager::multiplyMatrices() {
     matrixB->print();
 
     deleteMatrix(matrixResult);
-    matrixResult = new Matrix(*matrixA & *matrixB);
+    matrixResult = new Matrix((*matrixA) & (*matrixB));
 
     if (matrixResult->getRows() > 0 && matrixResult->getCols() > 0) {
         std::cout << "Результат умножения (A & B):" << std::endl;
@@ -83,6 +90,13 @@ void MenuManager::showCurrentMatrices() const {
         std::cout << "Результат умножения:" << std::endl;
         matrixResult->print();
     }
+}
+
+void MenuManager::deleteAllMatrices() {
+    deleteMatrix(matrixA);
+    deleteMatrix(matrixB);
+    deleteMatrix(matrixResult);
+    std::cout << "Все матрицы удалены." << std::endl;
 }
 
 void MenuManager::showMenu() {
@@ -126,6 +140,5 @@ void MenuManager::showMenu() {
 
         std::cin.clear();
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-
     } while (choice != 0);
 }
